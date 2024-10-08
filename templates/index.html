@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Live Game Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Live Game Monitor</h1>
+
+        <form method="POST">
+            <input type="text" name="summoner_name" placeholder="Enter Summoner Name" required>
+            <button type="submit">Check Live Game</button>
+        </form>
+
+        <!-- Display error messages if summoner is not found or not in a game -->
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Display live game data if available -->
+        {% if live_game_data %}
+        <h2>Live Game Details</h2>
+        <table>
+            <tr>
+                <th>Game ID</th>
+                <td>{{ live_game_data.gameId }}</td>
+            </tr>
+            <tr>
+                <th>Map ID</th>
+                <td>{{ live_game_data.mapId }}</td>
+            </tr>
+            <tr>
+                <th>Game Mode</th>
+                <td>{{ live_game_data.gameMode }}</td>
+            </tr>
+            <tr>
+                <th>Game Type</th>
+                <td>{{ live_game_data.gameType }}</td>
+            </tr>
+            <tr>
+                <th>Game Queue Config ID</th>
+                <td>{{ live_game_data.gameQueueConfigId }}</td>
+            </tr>
+            <tr>
+                <th>Platform ID</th>
+                <td>{{ live_game_data.platformId }}</td>
+            </tr>
+            <tr>
+                <th>Game Start Time</th>
+                <td>{{ live_game_data.gameStartTime }}</td>
+            </tr>
+            <tr>
+                <th>Game Length</th>
+                <td>{{ live_game_data.gameLength }}</td>
+            </tr>
+        </table>
+
+        <h3>Participants</h3>
+        <table>
+            <tr>
+                <th>Riot ID</th>
+                <th>Champion ID</th>
+                <th>Team ID</th>
+                <th>Spell 1</th>
+                <th>Spell 2</th>
+            </tr>
+            {% for participant in live_game_data.participants %}
+            <tr>
+                <td>{{ participant.riotId }}</td>
+                <td>{{ participant.championId }}</td>
+                <td>{{ participant.teamId }}</td>
+                <td>{{ participant.spell1Id }}</td>
+                <td>{{ participant.spell2Id }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
